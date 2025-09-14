@@ -1,0 +1,33 @@
+# ---------------------------------
+# Aktifkan mod_rewrite
+RewriteEngine On
+
+# 1. Saat akses root domain, arahkan ke index.html
+DirectoryIndex index.html
+
+# 2. Hilangkan ekstensi .html
+# Jadi file.html bisa diakses hanya dengan /file
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^([^/]+)$ $1.html [L]
+
+# 3. Redirect agar ekstensi .html disembunyikan di URL
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.html [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# ---------------------------------
+# 4. Global CORS (semua file bisa diakses lintas origin)
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# ---------------------------------
+# 5. Khusus Font (CORS untuk font agar tidak diblok browser)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|svg)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, OPTIONS"
+    </FilesMatch>
+</IfModule>

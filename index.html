@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living Heritage Karesidenan Pati</title>
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- AOS Animation -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @font-face {
+    font-family: 'ArialMT';
+    src: url('./fonts/arial.woff2') format('woff2'),
+        url('./fonts/arial.woff') format('woff');
+    font-display: swap;
+}
+        
+        body {
+            font-family: -apple-system, ArialMT, "Helvetica Neue", Helvetica, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: url('bg-kir.png') center/cover no-repeat fixed;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Overlay untuk readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 24, 54, 0.7);
+            z-index: -1;
+        }
+        
+        /* Mobile background */
+        @media (max-width: 768px) {
+            body {
+                background-image: url('bg-kir.png');
+            }
+        }
+        
+        /* Header */
+        .header {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .header-logo-prov {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .header-logo:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Menu Section */
+        .menu-section {
+            margin-bottom: 60px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .menu-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .menu-icon {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+        
+        .menu-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .menu-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        /* Video Section */
+        .video-section {
+            margin: 60px 0;
+            text-align: center;
+        }
+        
+        .video-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffffff, #43349f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .video-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-content {
+            background: rgba(4, 24, 54, 0.95);
+            backdrop-filter: blur(20px);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: white;
+        }
+        
+        .modal-body {
+            padding: 30px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+        
+        /* Grid Layout for Items */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .item-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .item-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .item-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .item-content {
+            padding: 20px;
+        }
+        
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .item-meta {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .item-excerpt {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* PDF Viewer */
+        .pdf-viewer-container {
+            width: 100%;
+            height: 75vh;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .pdf-controls {
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .pdf-controls button {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        
+        .pdf-controls button:hover {
+            background: #666;
+        }
+        
+        .pdf-canvas-container {
+            width: 100%;
+            height: calc(100% - 50px);
+            overflow: auto;
+            text-align: center;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .pdf-canvas {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        /* Image Viewer */
+        .image-viewer {
+            text-align: center;
+        }
+        
+        .image-viewer img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #43349f;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .item-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 98%;
+                margin: 1% auto;
+            }
+            
+            .modal-body {
+                padding: 15px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(67, 52, 159, 0.6);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(67, 52, 159, 0.8);
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #43349f;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .thumbnail-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(67, 52, 159, 0.1) 0%, transparent 50%);
+            animation: heroRotate 20s linear infinite;
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+        
+        .hero-title {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.2s ease-out 0.6s forwards;
+            position: relative;
+            /* Gunakan background animated langsung */
+            background: linear-gradient(135deg,
+                    #ffffff 0%,
+                    #43349f 25%,
+                    #ffd700 50%,
+                    #43349f 75%,
+                    #ffffff 100%);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1.2s ease-out 0.6s forwards, gradientShift 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(67, 52, 159, 0.4));
+        }
+        
+        .hero-headtitle {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 5px;
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.2s ease-out 0.6s forwards;
+            position: relative;
+            /* Gunakan background animated langsung */
+            background: linear-gradient(135deg,
+                    #ffffff 0%,
+                    #43349f 25%,
+                    #ffd700 50%,
+                    #43349f 75%,
+                    #ffffff 100%);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1.2s ease-out 0.6s forwards, gradientShift 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(67, 52, 159, 0.4));
+        }
+        
+        .hero-description {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.9s forwards;
+        }
+        
+        .hero-decorative {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #43349f, transparent);
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.2s forwards, pulse 2s ease-in-out 2s infinite;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            top: 40%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+        
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(4) {
+            top: 60%;
+            right: 25%;
+            animation-delay: 3s;
+        }
+        
+        .floating-element:nth-child(5) {
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes heroRotate {
+            from {
+                transform: rotate(0deg);
+            }
+            
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes float {
+            
+            0%,
+            100% {
+                transform: translateY(0px);
+                opacity: 0.6;
+            }
+            
+            50% {
+                transform: translateY(-20px);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            
+            0%,
+            100% {
+                transform: translateX(-50%) scaleY(1);
+                opacity: 0.7;
+            }
+            
+            50% {
+                transform: translateX(-50%) scaleY(1.2);
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0 40px;
+            }
+            
+            .hero-subtitle {
+                font-size: 13px;
+                letter-spacing: 2px;
+            }
+            
+            .hero-description {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+            
+            .hero-decorative {
+                height: 60px;
+            }
+        }
+        
+        /* Glass card effect for enhanced visual appeal */
+        .glass-card-effect {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(67, 52, 159, 0.1);
+        }
+        
+        /* Sparkle animation for title */
+        .hero-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.6) 30%,
+                    rgba(255, 255, 255, 0.8) 50%,
+                    rgba(255, 255, 255, 0.6) 70%,
+                    transparent 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes sparkle {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            
+            50% {
+                opacity: 1;
+            }
+            
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        @keyframes gradientShift {
+            
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        
+        /* Hero Image Card */
+        .hero-image-container {
+            max-width: 600px;
+            margin: 40px auto;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .heritage-card {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .heritage-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .heritage-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .heritage-image.kuno {
+            opacity: 1;
+            z-index: 2;
+        }
+        
+        .heritage-image.kini {
+            opacity: 0;
+            z-index: 1;
+            transform: scale(1.1);
+        }
+        
+        .heritage-image.kelak {
+            opacity: 0;
+            z-index: 0;
+            transform: scale(1.2);
+        }
+        
+        .heritage-card.show-kelak .heritage-image.kuno,
+        .heritage-card.show-kelak .heritage-image.kini {
+            opacity: 0;
+            transform: scale(0.8);
+            filter: blur(3px);
+        }
+        
+        .heritage-card.show-kelak .heritage-image.kelak {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
+            z-index: 2;
+        }
+        
+        .heritage-card.show-kini .heritage-image.kuno {
+            opacity: 0;
+            transform: scale(0.9);
+            filter: blur(2px);
+        }
+        
+        .heritage-card.show-kini .heritage-image.kini {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
+        }
+        
+        /* Overlay dengan efek gradient */
+        .heritage-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                    rgba(67, 52, 159, 0.3) 0%,
+                    transparent 50%,
+                    rgba(255, 215, 0, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 3;
+        }
+        
+        .heritage-card:hover .heritage-overlay {
+            opacity: 1;
+        }
+        
+        /* Label indicator */
+        .heritage-label {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            z-index: 4;
+        }
+        
+        .heritage-card:not(.show-kini) .heritage-label::before {
+            content: '🏛️ ';
+        }
+        
+        .heritage-card:not(.show-kini) .heritage-label::after {
+            content: 'KUNO';
+        }
+        
+        .heritage-card.show-kini .heritage-label::before {
+            content: '🌟 ';
+        }
+        
+        .heritage-card.show-kini .heritage-label::after {
+            content: 'KINI';
+        }
+        
+        .heritage-card.show-kelak .heritage-label::before {
+            content: '🚀 ';
+        }
+        
+        .heritage-card.show-kelak .heritage-label::after {
+            content: 'KELAK';
+        }
+        
+        /* Progress indicator */
+        .transition-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #43349f, #ffd700);
+            z-index: 5;
+            transition: width 0.1s linear;
+        }
+        
+        .heritage-card.transitioning .transition-progress {
+            animation: progressFill 4s linear;
+        }
+        
+        @keyframes progressFill {
+            0% {
+                width: 0%;
+                opacity: 1;
+            }
+            
+            90% {
+                width: 100%;
+                opacity: 1;
+            }
+            
+            100% {
+                width: 100%;
+                opacity: 0;
+            }
+        }
+        
+        /* Corner decorations */
+        .heritage-card::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            border-top: 2px solid rgba(255, 215, 0, 0.6);
+            border-left: 2px solid rgba(255, 215, 0, 0.6);
+            z-index: 6;
+            opacity: 0;
+            transform: translate(-10px, -10px);
+            transition: all 0.3s ease;
+        }
+        
+        .heritage-card::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.6);
+            border-right: 2px solid rgba(255, 215, 0, 0.6);
+            z-index: 6;
+            opacity: 0;
+            transform: translate(10px, 10px);
+            transition: all 0.3s ease;
+        }
+        
+        .heritage-card:hover::before {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+        
+        .heritage-card:hover::after {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+        
+        /* Shine effect */
+        .heritage-card .shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.4) 50%,
+                    transparent 100%);
+            z-index: 7;
+            animation: shine 3s ease-in-out infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .heritage-card {
+                height: 250px;
+                margin: 20px;
+            }
+            
+            .hero-image-container {
+                margin: 30px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <img src="https://humas.jatengprov.go.id/foto/1622767670852-Logo%20Provinsi%20Jawa%20Tengah%20(PNG-1080p)%20-%20FileVector69.png" alt="Provinsi Logo" class="header-logo-prov">
+            <img src="https://osissmaga.web.id/logo/smaga.png" alt="KIR Logo" class="header-logo-prov">
+            <img src="https://raw.githubusercontent.com/RelV-Dev/Image/refs/heads/main/kir-nobg.png" alt="KIR Logo" class="header-logo">
+        </div>
+    </header>
+    
+    <section class="hero-section">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-subtitle" data-aos="fade-up" data-aos-delay="300">
+                LOMBA LKTI TENTANG CAGAR BUDAYA TINGKAT PROVINSI
+            </div>
+            
+            <h1 class="hero-headtitle" <span>
+                Living Heritage
+                </span></h1>
+            
+            <h1 class="hero-title" data-text="EKS KARESIDENAN PATI">
+                EKS KARESIDENAN PATI
+            </h1>
+            
+            <!-- Heritage Image Card -->
+            <div class="hero-image-container" data-aos="zoom-in" data-aos-delay="900">
+                <div class="heritage-card" id="heritageCard">
+                    <img src="kuno.png" alt="Heritage Masa Lalu" class="heritage-image kuno">
+                    <img src="kini.png" alt="Heritage Masa Kini" class="heritage-image kini">
+                    <img src="kelak.png" alt="Heritage Masa Depan" class="heritage-image kelak">
+                    <div class="heritage-overlay"></div>
+                    <div class="heritage-label"></div>
+                    <div class="transition-progress"></div>
+                    <div class="shine"></div>
+                </div>
+            </div>
+            
+            <p class="hero-description" data-aos-delay="900">
+                Menghadirkan kembali sejarah Eks Karesidenan Pati lewat Living Heritage yang memadukan pelestarian budaya dengan kreativitas digital, menjadikannya dekat dan inspiratif untuk generasi Z.
+            </p>
+        </div>
+        
+        <div class="hero-decorative"></div>
+    </section>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Menu Section -->
+        <section class="menu-section">
+            <div class="menu-grid" id="menuGrid">
+                <!-- Menus will be loaded here -->
+            </div>
+        </section>
+        
+        <!-- Video Section -->
+        <section class="video-section" data-aos="fade-up">
+            <h2 class="video-title">Tour Heritage Karesidenan Pati</h2>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/PCYP6WqYSsg?si=vLZXSEhfBrxSTcCn" title="Tour Heritage Karesidenan Pati" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3 class="footer-title">EKS KARESIDENAN PATI</h3>
+            <p class="footer-description">
+                Portal informasi digital yang menyajikan artikel, infografis, dan konten multimedia
+                tentang warisan budaya dan perkembangan modern Karesidenan Pati.
+            </p>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/smagapatiofficial?igsh=dnFsaWMzcnp5ZjBp" class="footer-link"><i class="fab fa-instagram"></i>     @smagapatiofficial</a>
+                <a href="https://www.instagram.com/kir_smagapa?igsh=Zjg3engzMzFmdDl2" class="footer-link"><i class="fab fa-instagram"></i>     @kir_smagapa</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SMA Negeri 3 Pati. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Content</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+ <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        // Global PDF state
+        let currentPdf = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let pdfScale = 1.2;
+        
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            easing: 'ease-out-quart'
+        });
+        
+        // Generate PDF thumbnail
+        async function generatePDFThumbnail(url) {
+            try {
+                const pdf = await pdfjsLib.getDocument(url).promise;
+                const page = await pdf.getPage(1);
+                const viewport = page.getViewport({ scale: 0.5 });
+                
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+                
+                return canvas.toDataURL('image/jpeg', 0.8);
+            } catch (error) {
+                console.error('Error generating PDF thumbnail:', error);
+                return 'https://via.placeholder.com/400x300/253b6f/ffffff?text=PDF+Error';
+            }
+        }
+        
+        // Fetch data from db.json
+        async function fetchData() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/RelV-Dev/Image/refs/heads/main/public_db/db-alya.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching data from db.json:', error);
+                throw error;
+            }
+        }
+        
+        // Load data and create menu
+        async function loadData() {
+            try {
+                // Show loading state
+                const menuGrid = document.getElementById('menuGrid');
+                menuGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <div class="loading"></div>
+                        <p style="margin-top: 20px;">Memuat data...</p>
+                    </div>
+                `;
+                
+                // Fetch data from db.json
+                const data = await fetchData();
+                
+                // Validate data structure
+                if (!data || !data.menus || !Array.isArray(data.menus)) {
+                    throw new Error('Invalid data structure in db.json');
+                }
+                
+                // Create menu grid
+                createMenuGrid(data.menus);
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                
+                // Show error state
+                const menuGrid = document.getElementById('menuGrid');
+                menuGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #f39c12;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <h3>Gagal Memuat Data</h3>
+                        <p>Tidak dapat memuat data dari db.json. Silakan periksa koneksi internet Anda atau coba lagi nanti.</p>
+                        <button onclick="loadData()" style="margin-top: 20px; padding: 10px 20px; background: #43349f; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Coba Lagi
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function createMenuGrid(menus) {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = '';
+            
+            menus.forEach((menu, index) => {
+                const menuCard = document.createElement('div');
+                menuCard.className = 'menu-card';
+                menuCard.setAttribute('data-aos', 'fade-up');
+                menuCard.setAttribute('data-aos-delay', (index * 100).toString());
+                
+                menuCard.innerHTML = `
+                    <img src="${menu.icon}" alt="${menu.title}" class="menu-icon">
+                    <h3 class="menu-title">${menu.title}</h3>
+                    <p class="menu-description">Jelajahi koleksi ${menu.title.toLowerCase()} terbaru kami</p>
+                `;
+                
+                menuCard.addEventListener('click', () => openMenu(menu));
+                menuGrid.appendChild(menuCard);
+            });
+        }
+        
+        function openMenu(menu) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = menu.title;
+            
+            if (menu.id === 'artikel') {
+                showArtikelGrid(menu.items);
+            } else if (menu.id === 'infografis') {
+                showInfografikGrid(menu.items);
+            } else if (menu.id === 'reels') {
+                showReelsGrid(menu.items);
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        async function showArtikelGrid(articles) {
+            const modalBody = document.getElementById('modalBody');
+            let html = '<div class="item-grid">';
+            
+            // First render with loading placeholders
+            articles.forEach(article => {
+                html += `
+                    <div class="item-card" onclick="openPDF('${article.content_url}', '${article.title}')">
+                        <div class="thumbnail-loading" id="thumb-${article.id}">
+                            <div class="loading"></div>
+                            <span style="margin-left: 10px;">Memuat...</span>
+                        </div>
+                        <div class="item-content">
+                            <h4 class="item-title">${article.title}</h4>
+                            <div class="item-meta">Oleh: ${article.author} | ${formatDate(article.date)}</div>
+                            <p class="item-excerpt">${article.excerpt}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            modalBody.innerHTML = html;
+            
+            // Generate thumbnails asynchronously
+            articles.forEach(async (article) => {
+                const thumbnailContainer = document.getElementById(`thumb-${article.id}`);
+                if (thumbnailContainer) {
+                    try {
+                        const thumbnailUrl = await generatePDFThumbnail(article.content_url);
+                        thumbnailContainer.innerHTML = `<img src="${thumbnailUrl}" alt="${article.title}" class="item-thumbnail">`;
+                        thumbnailContainer.className = '';
+                    } catch (error) {
+                        thumbnailContainer.innerHTML = `<img src="https://via.placeholder.com/400x300/253b6f/ffffff?text=PDF" alt="${article.title}" class="item-thumbnail">`;
+                        thumbnailContainer.className = '';
+                    }
+                }
+            });
+        }
+        
+        function showInfografikGrid(infografis) {
+            const modalBody = document.getElementById('modalBody');
+            let html = '<div class="item-grid">';
+            
+            infografis.forEach(item => {
+                html += `
+                    <div class="item-card" onclick="openImage('${item.image_url}', '${item.title}')">
+                        <img src="${item.image_url}" alt="${item.title}" class="item-thumbnail">
+                        <div class="item-content">
+                            <h4 class="item-title">${item.title}</h4>
+                            <p class="item-excerpt">${item.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            modalBody.innerHTML = html;
+        }
+        
+        function showReelsGrid(reels) {
+            const modalBody = document.getElementById('modalBody');
+            let html = '<div class="item-grid">';
+            
+            reels.forEach(reel => {
+                html += `
+                    <div class="item-card" onclick="openTikTok('${reel.video_url}')">
+                        <img src="${reel.thumbnail_url}" alt="${reel.title}" class="item-thumbnail">
+                        <div class="item-content">
+                            <h4 class="item-title">${reel.title}</h4>
+                            <p class="item-excerpt">Tonton video ini di TikTok</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            modalBody.innerHTML = html;
+        }
+        
+        async function openPDF(pdfUrl, title) {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = title;
+            modalBody.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div class="loading"></div>
+                    <p style="margin-top: 10px;">Memuat PDF...</p>
+                </div>
+            `;
+            
+            try {
+                currentPdf = await pdfjsLib.getDocument(pdfUrl).promise;
+                totalPages = currentPdf.numPages;
+                currentPage = 1;
+                
+                modalBody.innerHTML = `
+                    <div class="pdf-viewer-container">
+                        <div class="pdf-controls">
+                            <div>
+                                <button onclick="previousPage()">◀ Sebelumnya</button>
+                                <span>Halaman <span id="currentPageNum">${currentPage}</span> dari ${totalPages}</span>
+                                <button onclick="nextPage()">Selanjutnya ▶</button>
+                            </div>
+                            <div>
+                                <button onclick="zoomOut()">-</button>
+                                <span id="zoomLevel">${Math.round(pdfScale * 100)}%</span>
+                                <button onclick="zoomIn()">+</button>
+                            </div>
+                        </div>
+                        <div class="pdf-canvas-container" id="pdfCanvasContainer">
+                            <!-- PDF pages will be rendered here -->
+                        </div>
+                    </div>
+                `;
+                
+                renderCurrentPage();
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                modalBody.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #f39c12; margin-bottom: 20px;"></i>
+                        <p>Gagal memuat PDF. Silakan coba lagi nanti.</p>
+                        <a href="${pdfUrl}" target="_blank" style="color: #43349f;">Buka PDF di tab baru</a>
+                    </div>
+                `;
+            }
+        }
+        
+        async function renderCurrentPage() {
+            if (!currentPdf) return;
+            
+            const container = document.getElementById('pdfCanvasContainer');
+            container.innerHTML = '<div style="text-align: center; padding: 20px;"><div class="loading"></div><p>Rendering halaman...</p></div>';
+            
+            try {
+                const page = await currentPdf.getPage(currentPage);
+                const viewport = page.getViewport({ scale: pdfScale });
+                
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                canvas.className = 'pdf-canvas';
+                
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+                
+                container.innerHTML = '';
+                container.appendChild(canvas);
+                
+                document.getElementById('currentPageNum').textContent = currentPage;
+                document.getElementById('zoomLevel').textContent = Math.round(pdfScale * 100) + '%';
+            } catch (error) {
+                console.error('Error rendering page:', error);
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: #f39c12;">Error rendering page</div>';
+            }
+        }
+        
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderCurrentPage();
+            }
+        }
+        
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderCurrentPage();
+            }
+        }
+        
+        function zoomIn() {
+            if (pdfScale < 3) {
+                pdfScale += 0.2;
+                renderCurrentPage();
+            }
+        }
+        
+        function zoomOut() {
+            if (pdfScale > 0.5) {
+                pdfScale -= 0.2;
+                renderCurrentPage();
+            }
+        }
+        
+        function openImage(imageUrl, title) {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = title;
+            modalBody.innerHTML = `
+                <div class="image-viewer">
+                    <img src="${imageUrl}" alt="${title}" onload="this.style.opacity=1" style="opacity:0; transition: opacity 0.3s;">
+                </div>
+            `;
+        }
+        
+        function openTikTok(url) {
+            window.open(url, '_blank');
+            closeModal();
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+            
+            // Reset PDF state
+            currentPdf = null;
+            currentPage = 1;
+            totalPages = 0;
+            pdfScale = 1.2;
+        }
+        
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('id-ID', options);
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        // PDF viewer keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (document.getElementById('modal').style.display === 'block' && currentPdf) {
+                switch (event.key) {
+                    case 'ArrowLeft':
+                        event.preventDefault();
+                        previousPage();
+                        break;
+                    case 'ArrowRight':
+                        event.preventDefault();
+                        nextPage();
+                        break;
+                    case '=':
+                    case '+':
+                        event.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        event.preventDefault();
+                        zoomOut();
+                        break;
+                }
+            }
+        });
+        
+        
+        // Heritage card animation
+        function initHeritageCard() {
+            const heritageCard = document.getElementById('heritageCard');
+            let isTransitioning = false;
+            let currentState = 0; // 0: kuno, 1: kini, 2: kelak
+            let transitionTimeout;
+            
+            function applyState(stateIndex) {
+                // Reset semua class
+                heritageCard.classList.remove('show-kini', 'show-kelak');
+                
+                // Apply state yang sesuai
+                switch (stateIndex) {
+                    case 0: // kuno - default state, no class needed
+                        break;
+                    case 1: // kini
+                        heritageCard.classList.add('show-kini');
+                        break;
+                    case 2: // kelak
+                        heritageCard.classList.add('show-kelak');
+                        break;
+                }
+            }
+            
+            function nextTransition() {
+                if (isTransitioning) return;
+                
+                isTransitioning = true;
+                heritageCard.classList.add('transitioning');
+                
+                // Tunggu progress bar selesai (4 detik)
+                setTimeout(() => {
+                    // Pindah ke state berikutnya
+                    currentState = (currentState + 1) % 3;
+                    applyState(currentState);
+                    
+                    // Tunggu transisi visual selesai
+                    setTimeout(() => {
+                        heritageCard.classList.remove('transitioning');
+                        isTransitioning = false;
+                        
+                        // Schedule transisi berikutnya (4 detik display + 4 detik interval)
+                        transitionTimeout = setTimeout(nextTransition, 1000);
+                    }, 800);
+                }, 1000);
+            }
+            
+            function startLoop() {
+                // Clear existing timeout
+                if (transitionTimeout) {
+                    clearTimeout(transitionTimeout);
+                }
+                
+                // Start dengan state awal (kuno)
+                currentState = 0;
+                applyState(currentState);
+                
+                // Mulai loop setelah delay awal
+                transitionTimeout = setTimeout(nextTransition, 4000);
+            }
+            
+            function pauseLoop() {
+                if (transitionTimeout) {
+                    clearTimeout(transitionTimeout);
+                }
+            }
+            
+            // Initialize loop setelah page load
+            setTimeout(startLoop, 1000);
+            
+            // Manual click (tidak mengganggu loop)
+            heritageCard.addEventListener('click', () => {
+                if (!isTransitioning) {
+                    pauseLoop();
+                    nextTransition();
+                }
+            });
+            
+            // Pause saat hover
+            heritageCard.addEventListener('mouseenter', () => {
+                pauseLoop();
+            });
+            
+            // Resume saat leave
+            heritageCard.addEventListener('mouseleave', () => {
+                if (!isTransitioning) {
+                    transitionTimeout = setTimeout(nextTransition, 1000);
+                }
+            });
+        }
+        
+        // Initialize heritage card when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            
+            // Initialize heritage card animation
+            setTimeout(initHeritageCard, 1500);
+        });
+    </script>
+</body>
+
+</html>
